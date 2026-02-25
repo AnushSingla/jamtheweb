@@ -58,8 +58,6 @@ const connectDB = async () => {
   }
 };
 
-connectDB()
-  .then(() => server.listen(5000, () => console.log("Server is running at port 5000 (with Socket.IO)")))
-  .catch(err => console.log(err))
+
 
 
