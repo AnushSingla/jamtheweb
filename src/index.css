@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 25% 5%;
+    --foreground: 210 40% 92%;
+
+    --card: 230 20% 10%;
+    --card-foreground: 210 40% 92%;
+
+    --popover: 230 20% 10%;
+    --popover-foreground: 210 40% 92%;
+
+    --primary: 42 92% 56%;
+    --primary-foreground: 230 25% 5%;
+
+    --secondary: 230 20% 14%;
+    --secondary-foreground: 210 40% 92%;
+
+    --muted: 230 15% 18%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 200 80% 55%;
+    --accent-foreground: 230 25% 5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 230 15% 18%;
+    --input: 230 15% 18%;
+    --ring: 42 92% 56%;
+
+    --radius: 0.75rem;
+
+    /* Custom cosmic tokens */
+    --sun-glow: 42 92% 56%;
+    --sun-core: 38 100% 65%;
+    --planet-save: 200 80% 55%;
+    --planet-invest: 145 60% 45%;
+    --planet-track: 280 60% 55%;
+    --planet-grow: 15 85% 55%;
+    --star-color: 220 30% 80%;
+    --orbit-line: 220 20% 20%;
+    --space-deep: 230 30% 3%;
+    --glow-gold: 42 92% 56%;
+
+    --sidebar-background: 230 20% 8%;
+    --sidebar-foreground: 210 40% 92%;
+    --sidebar-primary: 42 92% 56%;
+    --sidebar-primary-foreground: 230 25% 5%;
+    --sidebar-accent: 230 15% 14%;
+    --sidebar-accent-foreground: 210 40% 92%;
+    --sidebar-border: 230 15% 18%;
+    --sidebar-ring: 42 92% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+/* Orbital animations */
+@keyframes orbit-1 {
+  from { transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg); }
+}
+
+@keyframes sun-pulse {
+  0%, 100% { box-shadow: 0 0 60px 20px hsl(42 92% 56% / 0.4), 0 0 120px 40px hsl(42 92% 56% / 0.15); }
+  50% { box-shadow: 0 0 80px 30px hsl(42 92% 56% / 0.5), 0 0 160px 60px hsl(42 92% 56% / 0.2); }
+}
+
+@keyframes sun-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes float-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes orbit-dash {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes rain-fall {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
+
+@keyframes thunder-flash {
+  0%, 100% { opacity: 0; }
+  5%, 10% { opacity: 1; }
+  15%, 50% { opacity: 0; }
+  55%, 58% { opacity: 0.8; }
+  62%, 100% { opacity: 0; }
+}
+
+.animate-rain {
+  animation: rain-fall var(--rain-duration, 0.7s) linear infinite;
+}
+
+.animate-thunder {
+  animation: thunder-flash 2.5s ease-in-out infinite;
+}
+
+.animate-orbit {
+  animation: orbit-1 var(--orbit-duration, 12s) linear infinite;
+}
+
+.animate-sun-pulse {
+  animation: sun-pulse 3s ease-in-out infinite;
+}
+
+.animate-sun-rotate {
+  animation: sun-rotate 30s linear infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle var(--twinkle-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+.animate-float-up {
+  animation: float-up 0.8s ease-out forwards;
+  animation-delay: var(--float-delay, 0s);
+  opacity: 0;
+}
+
+/* Gradient backgrounds */
+.bg-space-gradient {
+  background: radial-gradient(ellipse at center, hsl(230 25% 8%) 0%, hsl(230 30% 3%) 70%);
+}
+
+.bg-sun-gradient {
+  background: radial-gradient(circle, hsl(45 100% 70%) 0%, hsl(42 92% 56%) 40%, hsl(30 90% 45%) 80%, hsl(15 80% 35%) 100%);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, hsl(42 92% 56%), hsl(45 100% 70%), hsl(42 92% 56%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
