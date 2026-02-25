@@ -46,7 +46,7 @@ const Login: React.FC = () => {
 
       localStorage.setItem("token", res.data.token);
       toast.success("Welcome back to HuddleUp!");
-      navigate("/");
+      navigate("/index");
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
 
