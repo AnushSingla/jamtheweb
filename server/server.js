@@ -18,7 +18,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ["https://huddle-up-beta.vercel.app", "http://localhost:5173", "http://localhost:5174"],
+  origin: ["https://jamtheweb.vercel.app/", "http://localhost:5173", "http://localhost:5174"],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
@@ -62,4 +62,4 @@ connectDB()
   .then(() => server.listen(5000, () => console.log("Server is running at port 5000 (with Socket.IO)")))
   .catch(err => console.log(err))
 
-module.exports = { io, emitFeedEvent };
+
