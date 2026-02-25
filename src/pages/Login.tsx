@@ -48,7 +48,7 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
       const res = await API.post<LoginResponse>("auth/login", form);
 
       localStorage.setItem("token", res.data.token);
-      setIsLoading(true);
+      setIsLoggedIn(true);
       toast.success("Welcome back to MoneyOrbit!");
       navigate("/index");
     } catch (error) {
