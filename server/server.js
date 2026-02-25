@@ -4,20 +4,20 @@ const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const cors = require("cors")
 const path = require('path');
-const { initRedis } = require("./config/redis");
+
 const { apiLimiter, authLimiter } = require("./middleware/rateLimit");
 
 const authRoutes = require("./routes/auth")
 
 
 dotenv.config();
-initRedis();
+
 
 const app = express();
 
 
 app.use(cors({
-  origin: ["https://jamtheweb.vercel.app", "http://localhost:5173", "http://localhost:5174"],
+  origin: ["https://jamtheweb.vercel.app", "http://localhost:8080", "http://localhost:5000"],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
