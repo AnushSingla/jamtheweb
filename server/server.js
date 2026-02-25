@@ -1,6 +1,5 @@
 const express = require("express")
-const http = require("http");
-const { Server } = require("socket.io");
+
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const cors = require("cors")
@@ -58,6 +57,8 @@ const connectDB = async () => {
   }
 };
 
-
+connectDB()
+  .then(() => app.listen(5000, () => console.log("Server is running at port 5000 (with Socket.IO)")))
+  .catch(err => console.log(err))
 
 
