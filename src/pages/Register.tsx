@@ -68,7 +68,7 @@ const Register: React.FC = () => {
     try {
       await API.post<RegisterResponse>("auth/register", form);
 
-      toast.success("Account created! Welcome to HuddleUp.");
+      toast.success("Account created! Welcome to MoneyOrbit.");
       navigate("/login");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

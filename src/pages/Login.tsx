@@ -17,6 +17,9 @@ interface LoginForm {
 interface LoginResponse {
   token: string;
 }
+interface LoginProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const features: { icon: React.ElementType; text: string }[] = [
   { icon: Trophy, text: "Follow live match scores & highlights" },
@@ -24,7 +27,7 @@ const features: { icon: React.ElementType; text: string }[] = [
   { icon: Zap, text: "Share and discuss moments in real time" },
 ];
 
-const Login: React.FC = () => {
+const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
   const [form, setForm] = useState<LoginForm>({
     email: "",
     password: "",
@@ -45,7 +48,8 @@ const Login: React.FC = () => {
       const res = await API.post<LoginResponse>("auth/login", form);
 
       localStorage.setItem("token", res.data.token);
-      toast.success("Welcome back to HuddleUp!");
+      setIsLoading(true);
+      toast.success("Welcome back to MoneyOrbit!");
       navigate("/index");
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;

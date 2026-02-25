@@ -3,8 +3,11 @@ import StarField from "@/components/StarField";
 import SolarSystem from "@/components/SolarSystem";
 import ExpenseForm from "@/components/ExpenseForm";
 import type { ExpenseData } from "@/components/SolarSystem";
+interface IndexProps {
+  onLogout: () => void;
+}
 
-const Index = () => {
+const Index: React.FC<IndexProps> = ({ onLogout }) => {
   const [expenses, setExpenses] = useState<ExpenseData>({
     grocery: { budget: 10000, spent: 12000 },
     shopping: { budget: 12000, spent: 12000 },
@@ -21,14 +24,21 @@ const Index = () => {
         <h2 className="font-display text-xl md:text-2xl font-bold text-gradient-gold">
           MoneyOrbit
         </h2>
-        <div className="flex gap-6 items-center">
-          <a href="#track" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">
-            Track
-          </a>
-          <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-display text-xs font-semibold tracking-wider hover:brightness-110 transition-all">
-            Launch App
-          </button>
-        </div>
+       <div className="flex gap-6 items-center">
+  <a
+    href="#track"
+    className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body"
+  >
+    Track
+  </a>
+
+  <button
+    onClick={onLogout}
+    className="px-4 py-2 rounded-lg bg-red-500 text-white font-display text-xs font-semibold tracking-wider hover:brightness-110 transition-all"
+  >
+    Logout
+  </button>
+</div>
       </nav>
 
       {/* Hero */}
