@@ -4,19 +4,8 @@ import axios, { AxiosError } from "axios";
 import { API } from "../api";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Mail,
-  Lock,
-  ArrowRight,
-  User,
-  Eye,
-  EyeOff,
-  Trophy,
-  Users,
-  Zap,
-} from "lucide-react";
+import { Eye, EyeOff, Trophy } from "lucide-react";
 import { toast } from "sonner";
 
 /* =========================
@@ -27,6 +16,7 @@ interface RegisterForm {
   username: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface RegisterResponse {
@@ -34,14 +24,11 @@ interface RegisterResponse {
 }
 
 /* =========================
-   Perks
+   Password Regex
 ========================= */
 
-const perks: { icon: React.ElementType; text: string }[] = [
-  { icon: Trophy, text: "Track live scores & sports highlights" },
-  { icon: Users, text: "Join fan communities for every sport" },
-  { icon: Zap, text: "Post & react to moments in real time" },
-];
+const passwordRegex =
+  /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 /* =========================
    Component
@@ -52,6 +39,7 @@ const Register: React.FC = () => {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -63,10 +51,29 @@ const Register: React.FC = () => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+
+    // Password validation
+    if (!passwordRegex.test(form.password)) {
+      toast.error(
+        "Password must be at least 8 characters, include 1 uppercase, 1 number and 1 special character."
+      );
+      return;
+    }
+
+    // Confirm password match
+    if (form.password !== form.confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      await API.post<RegisterResponse>("auth/register", form);
+      await API.post<RegisterResponse>("auth/register", {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
 
       toast.success("Account created! Welcome to MoneyOrbit.");
       navigate("/login");
@@ -90,18 +97,11 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex" style={{ background: "#080a14" }}>
-      
-
+    <div className="min-h-screen flex bg-[#080a14]">
       {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-[52%] relative flex-col justify-between p-12 overflow-hidden">
-        <div className="relative z-10 flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg"
-            style={{
-              background: "linear-gradient(135deg,#3b82f6,#1d4ed8)",
-            }}
-          >
+      <div className="hidden lg:flex lg:w-[52%] flex-col justify-between p-12">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-blue-600">
             <Trophy className="w-5 h-5 text-white" />
           </div>
           <span className="text-white font-bold text-xl tracking-wide">
@@ -112,8 +112,8 @@ const Register: React.FC = () => {
 
       {/* Right Panel */}
       <div className="flex-1 flex items-center justify-center p-6 sm:p-10">
-        <div className="w-full max-w-[400px] rounded-2xl p-8 space-y-5">
-          <div className="space-y-1">
+        <div className="w-full max-w-[400px] rounded-2xl p-8 space-y-5 bg-[rgba(20,24,40,0.85)] border border-white/10 backdrop-blur-xl">
+          <div>
             <h1 className="text-2xl font-extrabold text-white">
               Create your account
             </h1>
@@ -128,7 +128,7 @@ const Register: React.FC = () => {
               type="text"
               placeholder="Username"
               value={form.username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange={(e) =>
                 setForm({ ...form, username: e.target.value })
               }
               required
@@ -139,24 +139,54 @@ const Register: React.FC = () => {
               type="email"
               placeholder="Email"
               value={form.email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange={(e) =>
                 setForm({ ...form, email: e.target.value })
               }
               required
             />
 
             {/* Password */}
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={form.password}
+                onChange={(e) =>
+                  setForm({ ...form, password: e.target.value })
+                }
+                required
+              />
+              <div
+                className="absolute right-3 top-3 cursor-pointer text-gray-400"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </div>
+            </div>
+
+            {/* Confirm Password */}
             <Input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={form.password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setForm({ ...form, password: e.target.value })
+              placeholder="Confirm Password"
+              value={form.confirmPassword}
+              onChange={(e) =>
+                setForm({ ...form, confirmPassword: e.target.value })
               }
               required
             />
 
-            <Button type="submit" disabled={isLoading}>
+            {/* Password Rules */}
+            <div className="text-xs text-gray-400 space-y-1">
+              <p>Password must contain:</p>
+              <ul className="list-disc list-inside space-y-0.5">
+                <li>Minimum 8 characters</li>
+                <li>At least 1 uppercase letter</li>
+                <li>At least 1 number</li>
+                <li>At least 1 special character (@$!%*?&)</li>
+              </ul>
+            </div>
+
+            <Button type="submit" disabled={isLoading} className="w-full">
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
